@@ -1,0 +1,44 @@
+.cart-title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 60px;
+  margin-left: 10%;
+}
+.componenta-produs-cart {
+  display: flex;
+
+  .div-with-p-div{
+
+    margin-left: 20px;
+
+    .titlu-produs-cart {
+      font-weight: bold;
+    }
+
+    .descriere-produs-cart {
+      color: grey;
+      text-align: right;
+
+    }
+  }
+}
+
+.cart-sumar {
+
+  display: flex;
+
+  .sumar-comanda {
+    background: white;
+    width: 15%;
+    height: 300px;
+    margin-left: 50px;
+    margin-top: 50px;
+    border: #282c34;
+    border-radius: 8px;
+    box-shadow: 3px 3px 2px #8c8c8c;
+    overflow: hidden;
+    border: 0 none;
+  }
+}
+
+

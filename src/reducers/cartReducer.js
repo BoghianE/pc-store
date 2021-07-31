@@ -1,6 +1,6 @@
 import { cartTypes } from "../actions/actionTypes";
 
-let stateInit = {cart: []}
+let stateInit = {cart: {}}
 
 const cartReducer = (state=stateInit, action) => {
     switch (action.type) {

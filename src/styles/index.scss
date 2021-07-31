@@ -1,6 +1,12 @@
 @import './ProductCard.scss';
 @import './Home.scss';
+@import './ShowCart.scss';
+@import './TopBar.scss';
+@import './footer.scss';
+@import './ShoppingCart.scss';
 
 html {
-  background: #282c34;
+  background: #d9d9d9;
+  margin-left: -8px;
+  margin-top: -8px;
 }
