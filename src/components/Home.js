@@ -95,13 +95,13 @@ const Home = ({history}) => {
             <div className='product-container'>
                 {filtrated.map((d, index) => {
                     return(
-                        <div key={index} >
+                        <div key={index} className='div-with-card'>
                             <ProductCard
                                 name={d.title}
                                 price={d.price}
                                 description={d.description}
                                 image={d.image}
-                                userId={userData.id}
+                                userId={userData?.id}
                                 product={d}
                             />
 

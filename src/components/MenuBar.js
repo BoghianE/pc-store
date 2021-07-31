@@ -14,9 +14,11 @@ import MobileScreenShareIcon from '@material-ui/icons/MobileScreenShare';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        width: '50%',
+        width: '80%',
         margin: '0 16%',
         backgroundColor: '#fff',
+        marginTop: '60px',
+        marginLeft: '10%',
     },
 }));
 
@@ -40,7 +42,7 @@ const MenuBar = (props) => {
                     variant="scrollable"
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example"
-                    style={{marginLeft: '17%'}}
+                    style={{marginLeft: '30%'}}
                 >
                     <Tab label="Toate" icon={<AppsIcon />}  onClick={e => props.filterProducts(' ')}/>
                     <Tab label="Computer" icon={<DesktopWindowsIcon />}  onClick={e => props.filterProducts('computer')}/>

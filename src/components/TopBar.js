@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import ShowCart from "./ShowCart";
 import {HOME, CART, SIGN, SIGNIN} from '../utils/routeConstants'
 import Avatar from "@material-ui/core/Avatar";
+import Axios from "axios";
+import {url} from "../utils/api";
 
 
 
@@ -25,8 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TopBar = (props) => {
     const classes = useStyles()
-    const [schimba, setSchimba] = useState(true)
-    const [cart, setCart] = useState()
+    const [cart, setCart] = useState(0)
     const [openHover, setOpenHover] = useState(false)
     //
     // useEffect(() => {
@@ -36,9 +37,20 @@ const TopBar = (props) => {
     // }, [])
 
     useEffect(() => {
-        let localC = JSON.parse(localStorage.getItem('cart-length'))
-        setCart(localC)
-    }, [])
+        const getCart = () => {
+            Axios.post(url.cart, {userId: props.userData.id})
+                .then((res) => {
+                    setCart(res.data)
+                    console.log(props.userData.id)
+                })
+                .catch((err) => {
+                    alert(err)
+                    console.log(err)
+                })
+
+        }
+        getCart();
+    }, [props.userData?.id])
 
 
     return (
@@ -51,7 +63,7 @@ const TopBar = (props) => {
 
             {props.userData === null ?
                 <div className='navigation-container'>
-                    <div onClick={() => props.history.push(HOME)}>Acasa</div>
+                    <div onClick={e => window.location.href = '/'}>Acasa</div>
                     <div onClick={() => props.history.push(SIGNIN)}>Autentificare</div>
                     <div onClick={() => props.history.push(SIGN)}>Inregistreaza-te</div>
                 </div>
@@ -64,11 +76,11 @@ const TopBar = (props) => {
                         <div className="shopping-cart">
                             <div className="cart-icon-length" style={{marginTop: '-8px'}} onClick = {() => props.history.push(CART)} onMouseOver={e => setOpenHover(true)} >
                                 <ShoppingCartIcon/>
-                                <div className='number-of-items'>{} </div>
+                                <div className='number-of-items'>{cart?.length}</div>
                             </div>
                         </div>
                     }
-                    <div onClick={() => props.history.push(HOME)}> Acasa </div>
+                    <div onClick={e => window.location.href = '/'}> Acasa </div>
                     <div>Contul Meu</div>
                     <div style={{display: 'flex'}}>
                         <div>{props.userData?.username}</div>

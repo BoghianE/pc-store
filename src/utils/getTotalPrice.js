@@ -5,3 +5,11 @@ export const totalPrice = (cart = []) => {
     }
     return(total)
 };
+
+export const gettotalTaxa = (cart = []) => {
+    let total = 5.99;
+    for(let i=0;i<cart?.length;i++) {
+        total = total + cart[i].price;
+    }
+    return(total)
+};

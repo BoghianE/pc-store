@@ -45,6 +45,17 @@
     overflow: hidden;
     background-color: #fff !important;
     grid-template-columns: 80px auto 20% 20%;
+
+    .item3 {
+      cursor: pointer;
+      border-radius: 5%;
+      border: 0.1px solid red;
+      color: red;
+      height: 1px;
+      width: 70%;
+      margin-top: 20%;
+      text-align: center;
+    }
   }
   .grid-container-cart > div {
     background-color: #fff;
@@ -55,9 +66,10 @@
     height: 60px;
   }
 
-  .grid-container-cart > .item1, .grid-container-cart > .item2, .grid-container-cart > .item3 {
+  .grid-container-cart > .item0, .grid-container-cart > .item1, .grid-container-cart > .item2, .grid-container-cart > .item3 {
     padding: 20px 0;
   }
+
 
   .div-with-total {
     display: flex;

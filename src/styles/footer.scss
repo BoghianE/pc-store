@@ -1,9 +1,11 @@
 .footer-wr {
-  position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 100.4%;
   background-color: #181818;
   padding-top: 50px;
+  position: sticky;
+  margin-bottom: -8px;
+  margin-top: 40%;
 }
 
 .footer-wr p {

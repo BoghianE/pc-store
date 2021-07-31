@@ -6,10 +6,10 @@ import { totalPrice } from '../utils/getTotalPrice';
 import Axios from "axios";
 import {url} from "../utils/api";
 import {images} from "../images/images";
+import Button from "@material-ui/core/Button";
 
 
 const ShowCart = (props) => {
-    const [currentShowCart, setCurrentShowCart] = useState([])
     const [cart, setCart] = useState([])
 
 
@@ -17,8 +17,18 @@ const ShowCart = (props) => {
         const getCart = () => {
             Axios.post(url.cart, {userId: props.userData.id})
                 .then((res) => {
+                    for(let i=0;i<res.data.length;i++) {
+                        if (res.data[i].type === 'computer') {
+                            res.data[i]['image'] = images.computer
+                        }
+                        if (res.data[i].type === 'laptop') {
+                            res.data[i]['image'] = images.laptop
+                        }
+                        if (res.data[i].type === 'mobile') {
+                            res.data[i]['image'] = images.mobile
+                        }
+                    }
                     setCart(res.data)
-                    console.log(props.userData.id)
                 })
                 .catch((err) => {
                     alert(err)
@@ -28,12 +38,6 @@ const ShowCart = (props) => {
         }
         getCart();
     }, [props.userData.id])
-
-
-    useEffect(() => {
-        let data = localStorage.getItem('cart') ? [...JSON.parse(localStorage.getItem('cart'))] : []
-        setCurrentShowCart(data)
-    }, [])
 
 
     const leaveHover = () => {
@@ -52,16 +56,17 @@ const ShowCart = (props) => {
             .catch((err) => {
                 console.log(err)
             })
+        window.location.href = '/'
     }
 
-    let showTotal = totalPrice(currentShowCart)
+    let showTotal = totalPrice(cart)
     return (
         <div className='show-current-cart'  onMouseLeave={e => leaveHover()}>
             <div className='pop-title'>Ultimele adaugate:</div>
 
-            {currentShowCart?.length > 0 ? (
+            {cart?.length > 0 ? (
                 <div className='pop-elements'>
-                    {currentShowCart.map((item) => {
+                    {cart.map((item) => {
                         return (
                             <div key={item.id} className='grid-container-cart'>
                                 <div className='item0'>
@@ -72,13 +77,13 @@ const ShowCart = (props) => {
                                 </div>
                                 <div className='item1'>{item.title}</div>
                                 <div className='item2'>{item.price} RON</div>
-                                <button className='item3' onClick={() => deleteItem(item)}>Delete</button>
+                                <Button className='item3' size="small" onClick={() => deleteItem(item)}>Delete</Button>
                             </div>
                         );
                     })}
                     <div className='div-with-total'>
                         <div className='total1'>TOTAL: <span>{''} </span> </div>
-                        <div className='total2'>{currentShowCart.length} produse</div>
+                        <div className='total2'>{cart.length} produse</div>
                         <div className='total3'>{showTotal.toFixed(2)}$</div>
                     </div>
                 </div>
@@ -95,7 +100,6 @@ const ShowCart = (props) => {
                     </div>
                     <p>Du-te la cos</p>
                 </button>
-                <button onClick={() => console.log(cart)}>show</button>
             </div>
         </div>
     )

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import TopBar from "./TopBar";
 import Footer from './Footer'
 
-import {totalPrice} from "../utils/getTotalPrice";
+import {totalPrice, gettotalTaxa} from "../utils/getTotalPrice";
 
 
 import PropTypes from 'prop-types';
@@ -28,6 +28,8 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Axios from "axios";
 import {url} from "../utils/api";
 import {images} from "../images/images";
+import {CART} from "../utils/routeConstants";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 const useRowStyles = makeStyles((theme) => ({
     root: {
@@ -87,7 +89,7 @@ function Row(props) {
                             <p className='titlu-produs-cart'>{row.title}</p>
                             <div className='descriere-produs-cart'>
                                 <p>Disponibil in stoc</p>
-                                <p>Garantie inclusa: 20 luni</p>
+                                <p>Garantie inclusa: 24 luni</p>
                             </div>
                         </div>
                     </div>
@@ -154,6 +156,8 @@ function Row(props) {
 const ShoppingCart = ({history}) => {
     const [items, setItems] = useState([])
     const [userData, setUserData] = useState(0)
+    const [total, setTotal] = useState(0)
+    const [totalTaxa, setTotalTaxa] = useState(0)
     const classes = useTableStyles()
 
 
@@ -174,6 +178,8 @@ const ShoppingCart = ({history}) => {
                             res.data[i]['image'] = images.mobile
                         }
                     }
+                    setTotal(totalPrice(res.data).toFixed(2))
+                    setTotalTaxa(gettotalTaxa(res.data).toFixed(2))
                     setItems(res.data)
                 })
                 .catch((err) => {
@@ -217,9 +223,28 @@ const ShoppingCart = ({history}) => {
                 </TableContainer>
 
                 <div className='sumar-comanda'>
-                    <div>Sumar Comanda</div>
-                    <div>Cost Produse:</div>
-                    <div>{totalPrice(items)}</div>
+                    <div className='sumar-comanda-titlu'>Sumar Comanda</div>
+                    <div className='sumar-comanda-prod'>
+                        <div>Cost Produse:</div>
+                        <div className='pret-sumar'>{total} RON</div>
+                    </div>
+                    <div className='sumar-comanda-prod'>
+                        <div>Cost Livrare:</div>
+                        <div className='pret-sumar'>5.99 RON</div>
+                    </div>
+                    <div className='separator'> </div>
+                    <div className='total-sumar'>
+                        Total: {totalTaxa} RON
+                    </div>
+                    <div className='div-with-btn'>
+                        <button className='pop-button' >
+                            <div>
+                                <ArrowForwardIosIcon/>
+                                <ArrowForwardIosIcon/>
+                            </div>
+                            <p>Comanda</p>
+                        </button>
+                    </div>
                 </div>
             </div>
 

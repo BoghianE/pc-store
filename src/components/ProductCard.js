@@ -4,6 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
@@ -15,37 +16,48 @@ import { connect } from 'react-redux'
 import { updateCart }  from '../actions/cartActions'
 import Axios from "axios";
 import {url} from "../utils/api";
+import {images} from "../images/images";
+import {gettotalTaxa, totalPrice} from "../utils/getTotalPrice";
 
 const ProductCard = ({dispatch, name, price, description, image, userId, product}) => {
 
     const classes = useStyles();
-    const [activeButton, setActiveButton] = useState(true)
 
     const addToCart = (item) => {
-        let list = localStorage.getItem('cart') ? [...JSON.parse(localStorage.getItem('cart'))] : []
-        console.log(list)
-        let index = list.findIndex((t) => (t.id === item.id))
-        if( index === -1) {
-            localStorage.setItem('cart', JSON.stringify(list));
+        let index = 0
+        if(userId) {
+            Axios.post(url.cart, {userId: userId})
+                .then((res) => {
+                    if(res.data.length > 0)
+                        index = res.data.findIndex((t) => (t.id === item.id))
+                    else {
+                        index = -1
+                    }
+                    if( index === -1) {
 
-            Axios.post(url.addToCart, {userId: userId, deviceId: item.id})
-                .then(res => {
-                    if (res.status === 200) {
-                        console.log(res.data)
+                        Axios.post(url.addToCart, {userId: userId, deviceId: item.id})
+                            .then(res => {
+                                if (res.status === 200) {
+                                    console.log(res.data)
+                                }
+                            })
+                            .catch(err => console.error(err))
+                        window.location.href = '/'
+
+
+                    } else {
+                        alert('Produsul selectat este deja in cos!')
                     }
                 })
-                .catch(err => console.error(err))
+                .catch((err) => {
+                    alert(err)
+                    console.log(err)
+                })
 
         } else {
-            setActiveButton(false)
+            window.location.href = '/sign-in'
         }
 
-        //
-        // if( index === -1) {
-        //     list.push({...item, quantity: 1})
-        // } else {
-        //     list[index].quantity += 1
-        // }
 
     }
 
@@ -58,6 +70,7 @@ const ProductCard = ({dispatch, name, price, description, image, userId, product
             <CardHeader
             />
             <CardContent>
+                <img src={image} alt="prod"/>
                 <Typography variant="body2" color="textSecondary" component="p" style={{ height: '60px', overflow: 'hidden' }}>
                     {name}
                 </Typography>
@@ -67,16 +80,16 @@ const ProductCard = ({dispatch, name, price, description, image, userId, product
                 <Typography variant="body2" color="textSecondary" component="p" style={{ height: '60px', overflow: 'hidden' }}>
                     {price} RON
                 </Typography>
-                <img src={image} alt="prod"/>
-                { activeButton ?
-                    <button onClick={e => {
+                <Button
+                    className={classes.margin}
+                    size={"small"}
+                    onClick={e => {
                         e.stopPropagation()
                         addToCart(product)
-                    }}>
-                        Add to cart
-                    </button> :
-                    <button onClick={() => alert('Produsul selectat este deja in cos!')}>Add to cart</button>
-                }
+                    }}
+                >
+                    Adauga in cos
+                </Button>
             </CardContent>
         </Card>
     )
@@ -84,7 +97,7 @@ const ProductCard = ({dispatch, name, price, description, image, userId, product
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxWidth: 350,
+        width: '357px',
         margin: '0 4px'
     },
     media: {
@@ -104,6 +117,10 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         backgroundColor: red[500],
+    },
+    margin: {
+        border: '0.1px solid #3f51b5',
+        color: '#3f51b5',
     },
 }));
 
