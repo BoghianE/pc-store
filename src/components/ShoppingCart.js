@@ -1,14 +1,7 @@
 import React , { useState, useEffect } from "react";
-
-import { connect } from 'react-redux'
-
 import TopBar from "./TopBar";
-import Footer from './Footer'
+import {totalPrice, getTotalTaxa} from "../utils/getTotalPrice";
 
-import {totalPrice, gettotalTaxa} from "../utils/getTotalPrice";
-
-
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
@@ -28,47 +21,13 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Axios from "axios";
 import {url} from "../utils/api";
 import {images} from "../images/images";
-import {CART} from "../utils/routeConstants";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-
-const useRowStyles = makeStyles((theme) => ({
-    root: {
-        '& > *': {
-            borderBottom: 'unset',
-            height: '100px',
-        },
-    },
-
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    }
-}));
-
-const useTableStyles = makeStyles({
-    root: {
-        width: '60%',
-        marginLeft: '10%',
-        marginTop: '30px',
-    },
-    head: {
-        backgroundColor: '#bfbfbf',
-    },
-    row: {
-        fontSize: '32px',
-    },
-    cell: {
-        fontSize: '18px',
-        fontWeight: 'bold'
-    }
-
-});
 
 function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const [quantity, setQuantity] = useState(1)
     const classes = useRowStyles();
-
 
     const handleChange = (event) => {
         setQuantity(event.target.value);
@@ -104,6 +63,7 @@ function Row(props) {
                         inputProps={{ 'aria-label': 'Without label' }}
                     >
                         <MenuItem value={1}>1</MenuItem>
+                        <MenuItem value={2}>2</MenuItem>
                     </Select>
                 </TableCell>
                 <TableCell style={{fontWeight: 'bold'}}>{row.price}</TableCell>
@@ -141,7 +101,6 @@ function Row(props) {
                                         {row.camera === '' ? <TableCell>--</TableCell> : <TableCell>{row.camera}</TableCell>}
                                         {row.batteryLife === '' ? <TableCell>--</TableCell> : <TableCell>{row.batteryLife}</TableCell>}
                                         {row.display === '' ? <TableCell>--</TableCell> : <TableCell>{row.display}</TableCell>}
-
                                     </TableRow>
                                 </TableBody>
                             </Table>
@@ -159,7 +118,6 @@ const ShoppingCart = ({history}) => {
     const [total, setTotal] = useState(0)
     const [totalTaxa, setTotalTaxa] = useState(0)
     const classes = useTableStyles()
-
 
     useEffect(() => {
         const getCart = () => {
@@ -179,7 +137,7 @@ const ShoppingCart = ({history}) => {
                         }
                     }
                     setTotal(totalPrice(res.data).toFixed(2))
-                    setTotalTaxa(gettotalTaxa(res.data).toFixed(2))
+                    setTotalTaxa(getTotalTaxa(res.data).toFixed(2))
                     setItems(res.data)
                 })
                 .catch((err) => {
@@ -247,14 +205,40 @@ const ShoppingCart = ({history}) => {
                     </div>
                 </div>
             </div>
-
-
-            {/*<button onClick={() => console.log(items)}> show local storage</button>*/}
-            <Footer />
         </div>
     )
 }
 
+const useRowStyles = makeStyles((theme) => ({
+    root: {
+        '& > *': {
+            borderBottom: 'unset',
+            height: '100px',
+        },
+    },
 
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+    }
+}));
+
+const useTableStyles = makeStyles({
+    root: {
+        width: '60%',
+        marginLeft: '10%',
+        marginTop: '30px',
+    },
+    head: {
+        backgroundColor: '#bfbfbf',
+    },
+    row: {
+        fontSize: '32px',
+    },
+    cell: {
+        fontSize: '18px',
+        fontWeight: 'bold'
+    }
+
+});
 
 export default ShoppingCart

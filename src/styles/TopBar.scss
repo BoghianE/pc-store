@@ -1,6 +1,5 @@
 .ls-app-header {
-  display: flex;
-  width: 100.4%;
+  width: 100%;
   //flex-direction: row;
   //flex-wrap: nowrap;
   //justify-content: space-between;
@@ -18,26 +17,27 @@
   //margin-right: -8px;
   z-index: 5;
 
-  > div {
-    flex: 0 1 auto;
-    align-self: auto;
-    margin-top: 5px;
-  }
-
-  svg {
-    vertical-align: middle;
-  }
+  //> div {
+  //  flex: 0 1 auto;
+  //  align-self: auto;
+  //  margin-top: 5px;
+  //}
+  //
+  //svg {
+  //  vertical-align: middle;
+  //}
 }
 
 .navigation-container {
   display: flex;
-  flex: 1 0 100%;
+  //flex: 1 0 100%;
   order: 2;
   padding: 1rem;
   justify-content: center;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  margin-left: 60%;
-  margin-right: 3%;
+  margin-left: 50%;
+  //padding-left: 60%;
+  //width: 30%;
 
   > div {
     margin:0px 10px 0px 100px;
@@ -58,6 +58,7 @@
 
   .cart-icon-length {
     position: relative;
+    margin-top: 50%;
   }
 
   // .number-of-items {

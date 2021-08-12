@@ -1,30 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import IconButton from '@material-ui/core/IconButton';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 
-
-
 import { connect } from 'react-redux'
 
-import { updateCart }  from '../actions/cartActions'
 import Axios from "axios";
 import {url} from "../utils/api";
-import {images} from "../images/images";
-import {gettotalTaxa, totalPrice} from "../utils/getTotalPrice";
 
-const ProductCard = ({dispatch, name, price, description, image, userId, product}) => {
-
+const ProductCard = ({ name, price, description, image, userId, product }) => {
     const classes = useStyles();
 
     const addToCart = (item) => {
-        let index = 0
+        let index = 0;
         if(userId) {
             Axios.post(url.cart, {userId: userId})
                 .then((res) => {
@@ -34,7 +26,6 @@ const ProductCard = ({dispatch, name, price, description, image, userId, product
                         index = -1
                     }
                     if( index === -1) {
-
                         Axios.post(url.addToCart, {userId: userId, deviceId: item.id})
                             .then(res => {
                                 if (res.status === 200) {
@@ -43,8 +34,6 @@ const ProductCard = ({dispatch, name, price, description, image, userId, product
                             })
                             .catch(err => console.error(err))
                         window.location.href = '/'
-
-
                     } else {
                         alert('Produsul selectat este deja in cos!')
                     }
@@ -57,10 +46,7 @@ const ProductCard = ({dispatch, name, price, description, image, userId, product
         } else {
             window.location.href = '/sign-in'
         }
-
-
     }
-
 
     return(
         <Card
@@ -97,7 +83,7 @@ const ProductCard = ({dispatch, name, price, description, image, userId, product
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '357px',
+        maxWidth: '15rem',
         margin: '0 4px'
     },
     media: {

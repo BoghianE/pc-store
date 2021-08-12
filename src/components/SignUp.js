@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignUp = () => {
+    const classes = useStyles();
     const [userData, setUserData] = useState({})
 
     const registerUser = (e) => {
@@ -65,9 +66,8 @@ const SignUp = () => {
             }
         })
         .catch(err => console.error(err))
-    }
 
-    const classes = useStyles();
+    }
 
     return (
         <Container component="main" maxWidth="xs" style={{

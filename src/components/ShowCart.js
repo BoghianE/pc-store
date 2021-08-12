@@ -8,10 +8,8 @@ import {url} from "../utils/api";
 import {images} from "../images/images";
 import Button from "@material-ui/core/Button";
 
-
 const ShowCart = (props) => {
     const [cart, setCart] = useState([])
-
 
     useEffect(() => {
         const getCart = () => {
@@ -34,7 +32,6 @@ const ShowCart = (props) => {
                     alert(err)
                     console.log(err)
                 })
-
         }
         getCart();
     }, [props.userData.id])

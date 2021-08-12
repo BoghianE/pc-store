@@ -9,20 +9,6 @@ import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import LaptopIcon from '@material-ui/icons/Laptop';
 import MobileScreenShareIcon from '@material-ui/icons/MobileScreenShare';
 
-
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        width: '80%',
-        margin: '0 16%',
-        backgroundColor: '#fff',
-        marginTop: '60px',
-        marginLeft: '10%',
-    },
-}));
-
-
 const MenuBar = (props) => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
@@ -42,17 +28,30 @@ const MenuBar = (props) => {
                     variant="scrollable"
                     scrollButtons="auto"
                     aria-label="scrollable auto tabs example"
-                    style={{marginLeft: '30%'}}
+                    style={{marginLeft: '20%', width: '60%', display: 'inline-block', float: 'none'}}
                 >
-                    <Tab label="Toate" icon={<AppsIcon />}  onClick={e => props.filterProducts(' ')}/>
-                    <Tab label="Computer" icon={<DesktopWindowsIcon />}  onClick={e => props.filterProducts('computer')}/>
-                    <Tab label="Laptop" icon={<LaptopIcon />}  onClick={e => props.filterProducts('laptop')}/>
-                    <Tab label="Mobile" icon={<MobileScreenShareIcon />}  onClick={e => props.filterProducts('mobile')}/>
+                    <Tab label="Toate" icon={<AppsIcon />}  onClick={() => props.filterProducts(' ')}/>
+                    <Tab label="Computer" icon={<DesktopWindowsIcon />}  onClick={() => props.filterProducts('computer')}/>
+                    <Tab label="Laptop" icon={<LaptopIcon />}  onClick={() => props.filterProducts('laptop')}/>
+                    <Tab label="Mobile" icon={<MobileScreenShareIcon />}  onClick={() => props.filterProducts('mobile')}/>
 
                 </Tabs>
             </AppBar>
         </div>
-    )
-}
+    );
+};
 
-export default MenuBar
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        width: '80%',
+        margin: '0 16%',
+        backgroundColor: '#fff',
+        marginTop: '60px',
+        marginLeft: '10%',
+        marginRight: '10%',
+        textAlign: 'center'
+    },
+}));
+
+export default MenuBar;

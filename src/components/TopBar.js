@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import BackspaceIcon from '@material-ui/icons/Backspace';
-
-import IconButton from '@material-ui/core/IconButton';
-import SvgIcon from '@material-ui/core/SvgIcon';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ShowCart from "./ShowCart";
@@ -14,8 +8,6 @@ import {HOME, CART, SIGN, SIGNIN} from '../utils/routeConstants'
 import Avatar from "@material-ui/core/Avatar";
 import Axios from "axios";
 import {url} from "../utils/api";
-
-
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -74,7 +66,12 @@ const TopBar = (props) => {
                             <BackspaceIcon style={{ cursor:'pointer', display: 'none' }} onClick = {() => props.history.push(HOME)}/>
                         </div> :
                         <div className="shopping-cart">
-                            <div className="cart-icon-length" style={{marginTop: '-8px'}} onClick = {() => props.history.push(CART)} onMouseOver={e => setOpenHover(true)} >
+                            <div
+                                className="cart-icon-length"
+                                style={{marginTop: '-8px'}}
+                                onClick = {() => props.history.push(CART)}
+                                onMouseOver={e => setOpenHover(true)}
+                            >
                                 <ShoppingCartIcon/>
                                 <div className='number-of-items'>{cart?.length}</div>
                             </div>
@@ -82,13 +79,11 @@ const TopBar = (props) => {
                     }
                     <div onClick={e => window.location.href = '/'}> Acasa </div>
                     <div>Contul Meu</div>
-                    <div style={{display: 'flex'}}>
+                    <div style={{display: 'flex', marginRight: '3px'}}>
                         <div>{props.userData?.username}</div>
                         <Avatar className={classes.avatar} style={{marginTop: '-5px', width: '30px', height: '30px'}}>
                         </Avatar>
-                    </div>
-
-
+                    </div>0
 
                     {openHover && <ShowCart history={props.history} setOpenHover={setOpenHover} userData={props.userData}/>}
                 </div>

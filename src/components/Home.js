@@ -4,13 +4,11 @@ import { connect } from 'react-redux'
 import ProductCard from "./ProductCard";
 import TopBar from "./TopBar";
 import MenuBar from "./MenuBar";
-import Footer from './Footer'
 
 
 import {url} from '../utils/api'
 // import '../images/img.png'
 import {images} from '../images/images'
-import {updateCart} from "../actions/cartActions";
 
 
 import Axios from 'axios'
@@ -30,13 +28,13 @@ const Home = ({history}) => {
                     let localProducts = []
                     for(let i=0;i<res.data.length;i++) {
                         if (res.data[i].type === 'computer') {
-                            res.data[i]['image'] = images.computer
+                            res.data[i]['image'] = images.laptop
                         }
                         if (res.data[i].type === 'laptop') {
                             res.data[i]['image'] = images.laptop
                         }
                         if (res.data[i].type === 'mobile') {
-                            res.data[i]['image'] = images.mobile
+                            res.data[i]['image'] = images.laptop
                         }
                     }
                     localProducts = res.data.filter((item, index, self) => {
@@ -85,24 +83,21 @@ const Home = ({history}) => {
         if (filter === ' ') setFilt(trueProducts)
     }
 
-
-
-
     return (
-        <div>
+        <>
             <TopBar history={history} userData={userData}/>
             <MenuBar filterProducts={filterProducts}/>
             <div className='product-container'>
-                {filtrated.map((d, index) => {
+                {filtrated.map((item, index) => {
                     return(
                         <div key={index} className='div-with-card'>
                             <ProductCard
-                                name={d.title}
-                                price={d.price}
-                                description={d.description}
-                                image={d.image}
                                 userId={userData?.id}
-                                product={d}
+                                name={item.title}
+                                price={item.price}
+                                description={item.description}
+                                image={item.image}
+                                product={item}
                             />
 
 
@@ -110,12 +105,7 @@ const Home = ({history}) => {
                     )
                 })}
             </div>
-            <div>
-                {/*<button onClick={() => console.log(products)}>show products <img src={i} alt="pc"/>*/}
-                {/*</button>*/}
-            </div>
-            <Footer />
-        </div>
+        </>
 
 
     )
