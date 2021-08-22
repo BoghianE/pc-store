@@ -34,13 +34,18 @@ const SignIn = ({history}) => {
 
     const logInUser = () => {
         if(userData.username === 'admin' && userData.password === 'admin') {
+            localStorage.setItem('user', JSON.stringify('admin'))
             history.push(PANEL)
         } else {
             Axios.post(url.getOneUser,  { username: userData.username, password: userData.password })
                 .then((res) => {
-                    console.log(res.data)
-                    localStorage.setItem('user', JSON.stringify(res.data))
-                    history.push(HOME)
+                    if(res.status === 200) {
+                        localStorage.setItem('user', JSON.stringify(res.data))
+                        history.push(HOME)
+                    } else {
+                        alert('Nu exista acest utilizator!')
+                    }
+
                 })
                 .catch((err) => {
                     alert(err)
@@ -106,7 +111,6 @@ const SignIn = ({history}) => {
                     </Button>
                 </form>
             </div>
-            <button onClick={() => console.log(userData)}>Check</button>
             <Box mt={5}>
                 <Copyright />
             </Box>

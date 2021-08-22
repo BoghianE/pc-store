@@ -5,7 +5,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { totalPrice } from '../utils/getTotalPrice';
 import Axios from "axios";
 import {url} from "../utils/api";
-import {images} from "../images/images";
+import {images} from '../assets/images'
 import Button from "@material-ui/core/Button";
 
 const ShowCart = (props) => {
@@ -44,7 +44,6 @@ const ShowCart = (props) => {
     }
 
     const deleteItem = (item) => {
-        console.log(item.id)
         let id = item.id
         Axios.delete(url.deleteFromCart, {data: {userId: props.userData?.id, deviceId: id}})
             .then((res) => {
@@ -58,7 +57,7 @@ const ShowCart = (props) => {
 
     let showTotal = totalPrice(cart)
     return (
-        <div className='show-current-cart'  onMouseLeave={e => leaveHover()}>
+        <div className='show-current-cart'  onMouseLeave={() => leaveHover()}>
             <div className='pop-title'>Ultimele adaugate:</div>
 
             {cart?.length > 0 ? (

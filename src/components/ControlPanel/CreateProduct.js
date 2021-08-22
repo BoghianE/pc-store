@@ -1,21 +1,20 @@
 import React , {useState} from 'react'
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
+
 import Container from "@material-ui/core/Container";
 import {makeStyles} from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
+
+
+import Axios from "axios";
+import {url} from "../../utils/api";
+import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/Select";
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-
-
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -37,31 +36,34 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-function Selector() {
-    return (
-        <Select
-            // value={quantity}
-            // onChange={handleChange}
-            displayEmpty
-            // className={classes.selectEmpty}
-            inputProps={{ 'aria-label': 'Without label' }}
-        >
-            <MenuItem value={1}></MenuItem>
-        </Select>
-    );
-}
-
-
 const CreateProduct = () => {
     const classes = useStyles()
-    const [productData, setProductData] = useState([])
-    const [type, setType] = useState('calculator')
+    const [productData, setProductData] = useState()
+    const [price, setPrice] = useState()
+    const [type, setType] = useState('computer')
 
+    const createProduct = () => {
+        console.log(productData)
+        if (!productData.title || !price) {
+            alert('Denumirea si preturl produsului sunt obligatorii!')
+        } else {
+            Axios.post(url.productsCreate, {
+                type: type,
+                title: productData.title,
+                cpu: productData.cpu,
+                videoCard: productData.videoCard,
+                ram: productData.ram,
+                internalMemory: productData.internalMemory,
+                camera: productData.camera,
+                batteryLife: productData.batteryLife,
+                display: productData.display,
+                price: price?.toFixed(2),
+            })
+            window.location.href = '/control-panel'
+            alert('Produsul a fost creat cu succes!')
+        }
 
-    const handleChange = (event) => {
-        setType(event.target.value);
-    };
+    }
 
     return (
         <Container component="main" maxWidth="xs" style={{
@@ -78,9 +80,27 @@ const CreateProduct = () => {
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
+
+                            <FormControl className={classes.form}>
+                                <InputLabel id="demo-simple-select-label">Categorie</InputLabel>
+                                <Select
+                                    variant='outlined'
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={type}
+                                    name='type'
+                                    onChange={e => setType(e.target.value)}
+                                >
+                                    <MenuItem value='computer'>Computer</MenuItem>
+                                    <MenuItem value='laptop'>Laptop</MenuItem>
+                                    <MenuItem value='mobile'>Mobile</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
                             <TextField
                                 autoComplete="denumireProdus"
-                                name="denumireProdus"
+                                name="title"
                                 variant="outlined"
                                 required
                                 fullWidth
@@ -94,12 +114,13 @@ const CreateProduct = () => {
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
+                                type='number'
                                 required
                                 fullWidth
                                 id="pret"
                                 label="Pret"
-                                name="pret"
-                                onChange={e => setProductData({ ...productData, [e.target.name]:  e.target.value })}
+                                name="price"
+                                onChange={e => setPrice(parseFloat(e.target.value))}
                                 autoComplete="pret"
                             />
                         </Grid>
@@ -192,50 +213,14 @@ const CreateProduct = () => {
                                 autoComplete="display"
                             />
                         </Grid>
-
-                        <Grid item xs={12}>
-                            <FormControl className={classes.textField} fullWidth variant="outlined" labelId='Categorie'>
-                                <OutlinedInput id='Categorie'>Categorie</OutlinedInput>
-                                <Select
-                                    // value={type}
-                                    onChange={e => console.log(e.target.value)}
-                                    inputProps={{ 'aria-label': 'Without label' }}
-                                    id="categorie"
-                                    required
-                                    labelId='Categorie'
-                                    name="categorie"
-
-                                    // onChange={e => setProductData({ ...productData, [e.target.name]: e.target.value })}
-                                >
-                                    <MenuItem value={'calculator'} label='calculator'>Calculator</MenuItem>
-                                    <MenuItem value={'laptop'} label='laptop'>Laptop</MenuItem>
-                                    <MenuItem value={'mobile'} label='mobile'>Mobile</MenuItem>
-                                </Select>
-                            </FormControl>
-
-                            {/*<FormControl>*/}
-                            {/*    <InputLabel id="demo-simple-select-filled-label">Categorie</InputLabel>*/}
-                            {/*    <Select*/}
-                            {/*        variant="outlined" className={classes.textField} fullWidth onChange={handleChange}*/}
-                            {/*        labelId="demo-simple-select-filled-label"*/}
-                            {/*        id="demo-simple-select-filled"*/}
-                            {/*        value={type}*/}
-                            {/*        inputProps={{ 'aria-label': 'Without label' }}*/}
-                            {/*    ><MenuItem value={'calculator'} label='calculator'>Calculator</MenuItem>*/}
-                            {/*        <MenuItem value={'laptop'} label='laptop'>Laptop</MenuItem>*/}
-                            {/*        <MenuItem value={'mobile'} label='mobile'>Mobile</MenuItem>*/}
-                            {/*    </Select>*/}
-                            {/*</FormControl>*/}
-                        </Grid>
-
-
                     </Grid>
                     <Button
-                        type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={() => createProduct()}
+
                     >
                         Creaza
                     </Button>

@@ -51,17 +51,14 @@ const ProductCard = ({ name, price, description, image, userId, product }) => {
     return(
         <Card
             className={classes.root}
-            style={{ margin: '15px', position: 'relative', flexGrow: 1, textAlign: 'center', backgroundColor: '#fff' }}
+            style={{ margin: '30px', position: 'relative', flexGrow: 1, textAlign: 'center', backgroundColor: '#e6e8ed' }}
         >
             <CardHeader
             />
             <CardContent>
-                <img src={image} alt="prod"/>
-                <Typography variant="body2" color="textSecondary" component="p" style={{ height: '60px', overflow: 'hidden' }}>
+                <img src={image} alt="" style={{width: '170px', height: '110px'}}/>
+                <Typography variant="body2" color="textSecondary" component="p" style={{ height: '60px', overflow: 'hidden', marginTop: '10px'}}>
                     {name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p" style={{ height: '60px', overflow: 'hidden' }}>
-                    {description}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p" style={{ height: '60px', overflow: 'hidden' }}>
                     {price} RON
@@ -83,8 +80,8 @@ const ProductCard = ({ name, price, description, image, userId, product }) => {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxWidth: '15rem',
-        margin: '0 4px'
+        maxWidth: '20rem',
+        margin: '0 4px',
     },
     media: {
         width: '100%',

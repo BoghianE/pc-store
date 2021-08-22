@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { connect } from 'react-redux'
 
 import ProductCard from "./ProductCard";
 import TopBar from "./TopBar";
@@ -7,8 +6,7 @@ import MenuBar from "./MenuBar";
 
 
 import {url} from '../utils/api'
-// import '../images/img.png'
-import {images} from '../images/images'
+import {images} from '../assets/images'
 
 
 import Axios from 'axios'
@@ -28,13 +26,13 @@ const Home = ({history}) => {
                     let localProducts = []
                     for(let i=0;i<res.data.length;i++) {
                         if (res.data[i].type === 'computer') {
-                            res.data[i]['image'] = images.laptop
+                            res.data[i]['image'] = images.computer
                         }
                         if (res.data[i].type === 'laptop') {
                             res.data[i]['image'] = images.laptop
                         }
                         if (res.data[i].type === 'mobile') {
-                            res.data[i]['image'] = images.laptop
+                            res.data[i]['image'] = images.mobile
                         }
                     }
                     localProducts = res.data.filter((item, index, self) => {
@@ -59,23 +57,6 @@ const Home = ({history}) => {
         setUserData(localData)
     }, [])
 
-
-
-    // useEffect(() => {
-    //     const lengthFunc = () => {
-    //         let list = localStorage.getItem('cart') ? [...JSON.parse(localStorage.getItem('cart'))] : []
-    //         let total = 0;
-    //         for(let i=0;i<list?.length;i++) {
-    //             total = total + list[i].quantity;
-    //         }
-    //         setCartLength(total)
-    //         localStorage.setItem('cart-length', JSON.stringify(total))
-    //
-    //     }
-    //     lengthFunc();
-    // }, [])
-
-
     const filterProducts = (filter) => {
         let prod = [...trueProducts]
         prod = prod.filter(item => item.type === filter)
@@ -90,18 +71,15 @@ const Home = ({history}) => {
             <div className='product-container'>
                 {filtrated.map((item, index) => {
                     return(
-                        <div key={index} className='div-with-card'>
-                            <ProductCard
-                                userId={userData?.id}
-                                name={item.title}
-                                price={item.price}
-                                description={item.description}
-                                image={item.image}
-                                product={item}
-                            />
-
-
-                        </div>
+                        <ProductCard
+                            key={index}
+                            userId={userData?.id}
+                            name={item.title}
+                            price={item.price}
+                            description={item.description}
+                            image={item.image}
+                            product={item}
+                        />
                     )
                 })}
             </div>

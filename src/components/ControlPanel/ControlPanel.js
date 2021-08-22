@@ -6,6 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import HistoryIcon from '@material-ui/icons/History';
 import {makeStyles} from "@material-ui/core/styles";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import CreateProduct from "./CreateProduct";
 import EditProduct from "./EditProduct";
@@ -32,6 +33,11 @@ const ControlPanel = () => {
           setValue(newValue);
      };
 
+     const logOut = () => {
+          localStorage.removeItem('user')
+          window.location.href = '/'
+     }
+
      return (
          <div>
               <div className='control-header'>Control Panel</div>
@@ -47,9 +53,10 @@ const ControlPanel = () => {
                             aria-label="scrollable auto tabs example"
                             className='title-tabs'
                         >
-                             <Tab label="Create Product" icon={<AddIcon />} style={{marginLeft: '20%'}} onClick={() => setMenu('create')} />
-                             <Tab label="Edit/Delete Product" icon={<EditIcon />} style={{marginLeft: '10%'}} onClick={() => setMenu('edit')} />
-                             <Tab label="Payment History" icon={<HistoryIcon />} style={{marginLeft: '10%'}} onClick={() => setMenu('payment')} />
+                             <Tab label="Create Product" icon={<AddIcon />} style={{marginLeft: '10%'}} onClick={() => setMenu('create')} />
+                             <Tab label="Edit/Delete Product" icon={<EditIcon />} style={{marginLeft: '8%'}} onClick={() => setMenu('edit')} />
+                             <Tab label="Payment History" icon={<HistoryIcon />} style={{marginLeft: '8%'}} onClick={() => setMenu('payment')} />
+                             <Tab label="Delogare" icon={<ExitToAppIcon />} style={{marginLeft: '8%'}} onClick={() => logOut()} />
                         </Tabs>
                    </AppBar>
               </div>

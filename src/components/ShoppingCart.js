@@ -1,6 +1,7 @@
 import React , { useState, useEffect } from "react";
 import TopBar from "./TopBar";
 import {totalPrice, getTotalTaxa} from "../utils/getTotalPrice";
+import {buildDate} from "../utils/buildDate";
 
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -20,17 +21,36 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Axios from "axios";
 import {url} from "../utils/api";
-import {images} from "../images/images";
+import {images} from '../assets/images'
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
-function Row(props) {
-    const { row } = props;
+const Row = (props) => {
+    const { row, changeQ } = props;
+    const classes = useRowStyles();
     const [open, setOpen] = React.useState(false);
     const [quantity, setQuantity] = useState(1)
-    const classes = useRowStyles();
+    const [products, setProducts] = useState()
 
-    const handleChange = (event) => {
+    useEffect(() => {
+        const getProducts = () => {
+                Axios.get(url.products)
+                    .then((res) => {
+                        let localProducts = res.data.filter(item => item.title === row.title);
+                        setProducts(localProducts)
+                    })
+                    .catch((err) => {
+                        alert(err)
+                        console.log(err)
+                    })
+
+        }
+        getProducts();
+    }, [])
+
+    const handleChange = (event, title) => {
+        changeQ(mapQuantity => { return {...mapQuantity, [title]: event.target.value}})
         setQuantity(event.target.value);
+        localStorage.setItem(`${products[0].title}`, JSON.stringify(event.target.value))
     };
 
     return (
@@ -57,17 +77,22 @@ function Row(props) {
                 <TableCell >
                     <Select
                         value={quantity}
-                        onChange={handleChange}
+                        onChange={e => handleChange(e, row.title)}
                         displayEmpty
                         className={classes.selectEmpty}
                         inputProps={{ 'aria-label': 'Without label' }}
                     >
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
+                        {
+                            products?.map((item, index) => {
+                                return(
+                                    <MenuItem key={index} value={index+1}>{index+1}</MenuItem>
+                                )
+                            })
+                        }
                     </Select>
                 </TableCell>
                 <TableCell style={{fontWeight: 'bold'}}>{row.price}</TableCell>
-                <TableCell style={{fontWeight: 'bold'}}>{row.price}</TableCell>
+                <TableCell style={{fontWeight: 'bold'}}>{(row.price * quantity).toFixed(2)}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -114,36 +139,57 @@ function Row(props) {
 
 const ShoppingCart = ({history}) => {
     const [items, setItems] = useState([])
+    const [products, setProducts] = useState([])
     const [userData, setUserData] = useState(0)
     const [total, setTotal] = useState(0)
     const [totalTaxa, setTotalTaxa] = useState(0)
+    const [mapQuantity, setMapQuantity] = useState()
     const classes = useTableStyles()
 
     useEffect(() => {
-        const getCart = () => {
-            let localData = JSON.parse(localStorage.getItem('user'))
-
-            Axios.post(url.cart, {userId: localData.id})
+        const getProducts = () => {
+            Axios.get(url.products)
                 .then((res) => {
-                    for(let i=0;i<res.data.length;i++) {
-                        if (res.data[i].type === 'computer') {
-                            res.data[i]['image'] = images.computer
-                        }
-                        if (res.data[i].type === 'laptop') {
-                            res.data[i]['image'] = images.laptop
-                        }
-                        if (res.data[i].type === 'mobile') {
-                            res.data[i]['image'] = images.mobile
-                        }
-                    }
-                    setTotal(totalPrice(res.data).toFixed(2))
-                    setTotalTaxa(getTotalTaxa(res.data).toFixed(2))
-                    setItems(res.data)
+                    setProducts(res.data)
                 })
                 .catch((err) => {
                     alert(err)
                     console.log(err)
                 })
+
+        }
+        getProducts();
+    }, [])
+
+    useEffect(() => {
+        const getCart = () => {
+            let localData = JSON.parse(localStorage.getItem('user'))
+
+            if(localData !== null) {
+                Axios.post(url.cart, {userId: localData.id})
+                    .then((res) => {
+                        console.log(res.data)
+                        if (res.data.length > 0) {
+                            res.data.map(item => {
+                                if (item.type === 'computer') {
+                                    item['image'] = images.computer
+                                }
+                                if (item.type === 'laptop') {
+                                    item['image'] = images.laptop
+                                }
+                                if (item.type === 'mobile') {
+                                    item['image'] = images.mobile
+                                }
+                                setMapQuantity(mapQuantity => { return {...mapQuantity, [item.title]: 1}})
+                            })
+                        }
+                        setItems(res.data)
+                    })
+                    .catch((err) => {
+                        alert(err)
+                        console.log(err)
+                    })
+            }
 
         }
         getCart();
@@ -154,6 +200,53 @@ const ShoppingCart = ({history}) => {
         setUserData(localData)
     }, [])
 
+    useEffect(() => {
+        let total = 0
+        if(mapQuantity !== null && mapQuantity !== undefined){
+            let quant = Object.values(mapQuantity)
+            for(let i=0;i<items?.length;i++) {
+                total = total + items[i].price * quant[i]
+            }
+        }
+
+        setTotal(total)
+    }, [items, mapQuantity])
+
+    const finnishOrder = () => {
+        let localList = []
+        items.map(item => {
+            let sameProducts = products.filter(prod => prod.title === item.title)
+            console.log(sameProducts)
+            sameProducts.map(selected => {
+                let quant = Object.values(mapQuantity)
+                console.log(quant)
+                if(sameProducts.indexOf(selected)+1 > quant[items.indexOf(item)]){
+                    return 0
+                } else {
+                    let date = buildDate()
+                    localList.push({userId: userData.id, deviceId: selected.id, dateTime: date, amount: selected.price})
+                }
+            })
+        })
+        Axios.post(url.makePayment, localList)
+            .then(res => {
+                items.map(item => {
+                    return Axios.delete(url.deleteFromCart, {data: {userId: userData.id, deviceId: item.id}})
+                        .then(res => {
+                            console.log(res)
+                            alert('Comanda finalizata cu succes!')
+                        })
+                        .catch(err => {
+                            console.log(err)
+                        })
+                })
+                window.location.href = '/'
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    }
 
     return (
         <div>
@@ -161,30 +254,35 @@ const ShoppingCart = ({history}) => {
             <div className='cart-title'>Cosul tau de cumparaturi:</div>
 
             <div className='cart-sumar'>
-                <TableContainer component={Paper} className={classes.root}>
-                    <Table aria-label="collapsible table">
-                        <TableHead className={classes.head}>
-                            <TableRow className={classes.row}>
-                                <TableCell />
-                                <TableCell className={classes.cell}>Produs</TableCell>
-                                <TableCell className={classes.cell} >Cantitate</TableCell>
-                                <TableCell className={classes.cell} >Pret Unitar</TableCell>
-                                <TableCell className={classes.cell} >Pret Total</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {items?.map((row) => (
-                                <Row key={row.title} row={row} />
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                {items.length !== 0 ?
+                    <TableContainer component={Paper} className={classes.root}>
+                        <Table aria-label="collapsible table">
+                            <TableHead className={classes.head}>
+                                <TableRow className={classes.row}>
+                                    <TableCell/>
+                                    <TableCell className={classes.cell}>Produs</TableCell>
+                                    <TableCell className={classes.cell}>Cantitate</TableCell>
+                                    <TableCell className={classes.cell}>Pret Unitar</TableCell>
+                                    <TableCell className={classes.cell}>Pret Total</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {items?.map((row) => (
+                                    <Row key={row.id} row={row} changeQ={setMapQuantity}/>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer> :
+                    <div style={{width: '60%',
+                        marginLeft: '10%',
+                        marginTop: '30px',}}>Cosul tau de cumparaturi este gol!</div>
+                }
 
                 <div className='sumar-comanda'>
                     <div className='sumar-comanda-titlu'>Sumar Comanda</div>
                     <div className='sumar-comanda-prod'>
                         <div>Cost Produse:</div>
-                        <div className='pret-sumar'>{total} RON</div>
+                            <div className='pret-sumar'>{total.toFixed(2)} RON</div>
                     </div>
                     <div className='sumar-comanda-prod'>
                         <div>Cost Livrare:</div>
@@ -192,7 +290,7 @@ const ShoppingCart = ({history}) => {
                     </div>
                     <div className='separator'> </div>
                     <div className='total-sumar'>
-                        Total: {totalTaxa} RON
+                        Total: {(total+5.99).toFixed(2)} RON
                     </div>
                     <div className='div-with-btn'>
                         <button className='pop-button' >
@@ -200,7 +298,7 @@ const ShoppingCart = ({history}) => {
                                 <ArrowForwardIosIcon/>
                                 <ArrowForwardIosIcon/>
                             </div>
-                            <p>Comanda</p>
+                            <p onClick={() => finnishOrder()}>Comanda</p>
                         </button>
                     </div>
                 </div>
