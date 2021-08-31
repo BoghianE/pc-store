@@ -14,7 +14,7 @@ import {makeStyles} from "@material-ui/core/styles";
 
 const PaymentHistory = () => {
     const classes = useStyles()
-    const [payments, setPayments] = useState()
+    const [payments, setPayments] = useState([])
 
     useEffect(() => {
         const getPayments = () => {
@@ -29,31 +29,34 @@ const PaymentHistory = () => {
         getPayments()
     }, [])
 
-    return (
-        <TableContainer component={Paper} className={classes.root}>
-            <Table aria-label="collapsible table">
-                <TableHead className={classes.head}>
-                    <TableRow className={classes.row}>
-                        <TableCell/>
-                        <TableCell className={classes.cell}>Id Utilizator</TableCell>
-                        <TableCell className={classes.cell}>Id Dispozitiv</TableCell>
-                        <TableCell className={classes.cell}>Data</TableCell>
-                        <TableCell className={classes.cell}>Suma Platita</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {payments?.map((item, index) => (
-                        <TableRow className={classes.row} key={index}>
+return (
+    <TableContainer component={Paper} className={classes.root}>
+        {payments.length !== 0 ?
+                <Table aria-label="collapsible table">
+                    <TableHead className={classes.head}>
+                        <TableRow className={classes.row}>
                             <TableCell/>
-                            <TableCell className={classes.cell}>{item.userId}</TableCell>
-                            <TableCell className={classes.cell}>{item.deviceId}</TableCell>
-                            <TableCell className={classes.cell}>{item.dateTime.slice(0,19)}</TableCell>
-                            <TableCell className={classes.cell}>{item.amount}</TableCell>
+                            <TableCell className={classes.cell}>Id Utilizator</TableCell>
+                            <TableCell className={classes.cell}>Id Dispozitiv</TableCell>
+                            <TableCell className={classes.cell}>Data</TableCell>
+                            <TableCell className={classes.cell}>Suma Platita</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                        {payments?.map((item, index) => (
+                            <TableRow className={classes.row} key={index}>
+                                <TableCell/>
+                                <TableCell className={classes.cell}>{item.userId}</TableCell>
+                                <TableCell className={classes.cell}>{item.deviceId}</TableCell>
+                                <TableCell className={classes.cell}>{item.dateTime.slice(0,19)}</TableCell>
+                                <TableCell className={classes.cell}>{item.amount}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table> :
+            <div style={{fontWeight: 'bold', fontSize: '26px'}}>Nu exista plati inregistrate!</div>                   
+        }
+    </TableContainer>
 )
 }
 const useStyles = makeStyles({

@@ -15,7 +15,7 @@ import TopBar from "./TopBar";
 
 const UserHistory = (props) => {
     const classes = useStyles()
-    const [payments, setPayments] = useState()
+    const [payments, setPayments] = useState([])
 
     useEffect(() => {
         const getPayments = () => {
@@ -34,30 +34,33 @@ const UserHistory = (props) => {
         <div className={classes.dialog}>
             <div className={classes.root}>
                 <button className={classes.button} onClick={() => props.setShowHistory(false)}>X</button>
-                <TableContainer component={Paper}>
-                    <Table aria-label="collapsible table">
-                        <TableHead className={classes.head}>
-                            <TableRow className={classes.row}>
-                                <TableCell/>
-                                <TableCell className={classes.cell}>Id Utilizator</TableCell>
-                                <TableCell className={classes.cell}>Id Dispozitiv</TableCell>
-                                <TableCell className={classes.cell}>Data</TableCell>
-                                <TableCell className={classes.cell}>Suma Platita</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {payments?.map((item, index) => (
-                                <TableRow className={classes.row} key={index}>
+                {payments.length !== 0 ?
+                    <TableContainer component={Paper}>
+                        <Table aria-label="collapsible table">
+                            <TableHead className={classes.head}>
+                                <TableRow className={classes.row}>
                                     <TableCell/>
-                                    <TableCell className={classes.cell}>{item.userId}</TableCell>
-                                    <TableCell className={classes.cell}>{item.deviceId}</TableCell>
-                                    <TableCell className={classes.cell}>{item.dateTime.slice(0,19)}</TableCell>
-                                    <TableCell className={classes.cell}>{item.amount}</TableCell>
+                                    <TableCell className={classes.cell}>Id Utilizator</TableCell>
+                                    <TableCell className={classes.cell}>Id Dispozitiv</TableCell>
+                                    <TableCell className={classes.cell}>Data</TableCell>
+                                    <TableCell className={classes.cell}>Suma Platita</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                                {payments?.map((item, index) => (
+                                    <TableRow className={classes.row} key={index}>
+                                        <TableCell/>
+                                        <TableCell className={classes.cell}>{item.userId}</TableCell>
+                                        <TableCell className={classes.cell}>{item.deviceId}</TableCell>
+                                        <TableCell className={classes.cell}>{item.dateTime.slice(0,19)}</TableCell>
+                                        <TableCell className={classes.cell}>{item.amount}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer> :
+                    <div style={{marginLeft: '30%', fontWeight: 'bold', fontSize: '26px'}}>Istoricul platilor este gol!</div>
+                }
             </div>
         </div>
 

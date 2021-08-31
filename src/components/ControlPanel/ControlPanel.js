@@ -39,7 +39,7 @@ const ControlPanel = () => {
      }
 
      return (
-         <div>
+         <div style={{display: 'flex', flexDirection: 'column'}}>
               <div className='control-header'>Control Panel</div>
               <div className={classes.root}>
                    <AppBar position="static" color="transparent" shadow='none'>

@@ -67,10 +67,10 @@ const CreateProduct = () => {
 
     return (
         <Container component="main" maxWidth="xs" style={{
-            position: 'absolute',
-            top: '70%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)'
+            // position: 'absolute',
+            // top: '70%',
+            // left: '50%',
+            // transform: 'translate(-50%, -50%)'
         }}>
             <CssBaseline />
             <div className={classes.paper}>
@@ -222,7 +222,7 @@ const CreateProduct = () => {
                         onClick={() => createProduct()}
 
                     >
-                        Creaza
+                        Creeaza
                     </Button>
                 </form>
             </div>
