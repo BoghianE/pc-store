@@ -1,3 +1,13 @@
+PASII:
+  1. deschide folderu unde va fi proiectul
+  2. deschide terminalul
+  3. introdu urmatoarele comenzi in terminal in ordinea asta:
+  4. git clone https://github.com/BoghianE/pc-store
+  5. cd pc-store
+  6. npm install
+  7. npm start
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
