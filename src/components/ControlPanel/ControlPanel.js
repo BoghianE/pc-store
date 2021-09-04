@@ -40,7 +40,7 @@ const ControlPanel = () => {
 
      return (
          <div style={{display: 'flex', flexDirection: 'column'}}>
-              <div className='control-header'>Control Panel</div>
+              <div className='control-header'>Panou de Control</div>
               <div className={classes.root}>
                    <AppBar position="static" color="transparent" shadow='none'>
                         <Tabs
@@ -53,9 +53,9 @@ const ControlPanel = () => {
                             aria-label="scrollable auto tabs example"
                             className='title-tabs'
                         >
-                             <Tab label="Create Product" icon={<AddIcon />} style={{marginLeft: '10%'}} onClick={() => setMenu('create')} />
-                             <Tab label="Edit/Delete Product" icon={<EditIcon />} style={{marginLeft: '8%'}} onClick={() => setMenu('edit')} />
-                             <Tab label="Payment History" icon={<HistoryIcon />} style={{marginLeft: '8%'}} onClick={() => setMenu('payment')} />
+                             <Tab label="Creeaza Produs" icon={<AddIcon />} style={{marginLeft: '10%'}} onClick={() => setMenu('create')} />
+                             <Tab label="Editeaza/Sterge Produs" icon={<EditIcon />} style={{marginLeft: '8%'}} onClick={() => setMenu('edit')} />
+                             <Tab label="Istoric Plati" icon={<HistoryIcon />} style={{marginLeft: '8%'}} onClick={() => setMenu('payment')} />
                              <Tab label="Delogare" icon={<ExitToAppIcon />} style={{marginLeft: '8%'}} onClick={() => logOut()} />
                         </Tabs>
                    </AppBar>

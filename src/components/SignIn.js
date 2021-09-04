@@ -109,6 +109,14 @@ const SignIn = ({history}) => {
                     >
                         Autentificare
                     </Button>
+
+                    <Grid container justifyContent="flex-end">
+                        <Grid item>
+                            <Link href="/sign-up" variant="body2">
+                                Nu ai un cont? Inregistreaza-te!
+                            </Link>
+                        </Grid>
+                    </Grid>
                 </form>
             </div>
             <Box mt={5}>

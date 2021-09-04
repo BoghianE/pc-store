@@ -11,7 +11,8 @@ import {images} from '../assets/images'
 
 import Axios from 'axios'
 
-
+// Desi e componenta principala Home.js e si cea mai simpla, deoarece este componenta parinte si are rolul de a randeriza alte componente mai complexe intr-o
+// singura pagina. Cele 3 componente sunt TopBar, MenuBar, si ProductCard, care se ocupa de logica mai complexa a proiectului.
 
 const Home = ({history}) => {
     const [products, setProducts] = useState([])
@@ -76,7 +77,6 @@ const Home = ({history}) => {
                             userId={userData?.id}
                             name={item.title}
                             price={item.price}
-                            description={item.description}
                             image={item.image}
                             product={item}
                         />

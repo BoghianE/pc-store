@@ -12,7 +12,11 @@ import { connect } from 'react-redux'
 import Axios from "axios";
 import {url} from "../utils/api";
 
-const ProductCard = ({ name, price, description, image, userId, product }) => {
+// Componenta asta joaca rolul de template pentru toate tipurile de produse. Astfel respectam conceptul de DRY(Don't Repeat Yourself).
+// Am scris o singura componenta pe care am folosit-o mai apoi in mai multe locuri din aplicatie.
+// Componenta accepta 5 parametri pe care ii folosim sa prelucram date caracteristice unui singur produs.
+
+const ProductCard = ({ name, price, image, userId, product }) => {
     const classes = useStyles();
 
     const addToCart = (item) => {

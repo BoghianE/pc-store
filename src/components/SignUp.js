@@ -185,7 +185,6 @@ const SignUp = () => {
                     </Grid>
                 </form>
             </div>
-            <button onClick={() => console.log(userData)}>check user</button>
             <Box mt={5}>
                 <Copyright />
             </Box>
