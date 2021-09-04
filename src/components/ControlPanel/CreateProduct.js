@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip"
 
 import Container from "@material-ui/core/Container";
 import {makeStyles} from "@material-ui/core/styles";
@@ -38,13 +39,19 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateProduct = () => {
     const classes = useStyles()
-    const [productData, setProductData] = useState()
+    const [productData, setProductData] = useState([])
     const [price, setPrice] = useState()
     const [type, setType] = useState('computer')
+    const [phoneError, setPhoneError] = useState(false)
 
     const createProduct = () => {
-        console.log(productData)
-        if (!productData.title || !price) {
+        let stringPrice = price.toString()
+        console.log(stringPrice)
+        if (stringPrice.includes('-')  || stringPrice.includes('e') || stringPrice.includes('+') || stringPrice === 'NaN') {
+            alert('Pretul este invalid!')
+            return 0
+        }
+        else if (!productData.title || !price) {
             alert('Denumirea si preturl produsului sunt obligatorii!')
         } else {
             Axios.post(url.productsCreate, {
@@ -65,12 +72,9 @@ const CreateProduct = () => {
 
     }
 
+
     return (
         <Container component="main" maxWidth="xs" style={{
-            // position: 'absolute',
-            // top: '70%',
-            // left: '50%',
-            // transform: 'translate(-50%, -50%)'
         }}>
             <CssBaseline />
             <div className={classes.paper}>
@@ -112,17 +116,25 @@ const CreateProduct = () => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                type='number'
-                                required
-                                fullWidth
-                                id="pret"
-                                label="Pret"
-                                name="price"
-                                onChange={e => setPrice(parseFloat(e.target.value))}
-                                autoComplete="pret"
-                            />
+                            <Tooltip
+                                open={phoneError}
+                                title='Pretul este invalid!'
+                                classes={{ tooltip: classes.errorTooltip }}
+                                placement='top'
+                            >
+                                <TextField
+                                    variant="outlined"
+                                    type='number'
+                                    required
+                                    fullWidth
+                                    id="pret"
+                                    label="Pret"
+                                    name="price"
+                                    // inputProps={{ inputMode: 'numeric', pattern: '[0-9]' }}
+                                    onChange={e => setPrice(parseFloat(e.target.value))}
+                                    autoComplete="pret"
+                                />
+                            </Tooltip>
                         </Grid>
 
                         <Grid item xs={12}>
@@ -223,6 +235,15 @@ const CreateProduct = () => {
 
                     >
                         Creeaza
+                    </Button>
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        onClick={() => console.log(price)}
+
+                    >
+                        set
                     </Button>
                 </form>
             </div>

@@ -8,6 +8,11 @@ import {url} from "../utils/api";
 import {images} from '../assets/images'
 import Button from "@material-ui/core/Button";
 
+
+// ShowCart este o componenta copil a TopBar, neavand alte componente subordonate. Randerizarea componentei este legata de un event sau o conditie: Componenta
+// este randerizata (apare) doar atunci cand clientul trece cu cursorul peste iconita cosului de cumparaturi din TopBar. Componeta are rolul de a arata
+// informatii legate de cosul de cumparaturi si ofera optiunea de a sterge iteme din cos. 
+
 const ShowCart = (props) => {
     const [cart, setCart] = useState([])
 

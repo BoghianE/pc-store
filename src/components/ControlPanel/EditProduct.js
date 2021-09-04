@@ -125,7 +125,7 @@ const Row = (props) => {
                         color="primary"
                         size="small"
                         className={classes.submit}
-                        onClick={() => startEdit()}>Edit</Button></TableCell> :
+                        onClick={() => startEdit()}>Editeaza</Button></TableCell> :
                     <TableCell style={{fontWeight: 'bold', display: 'grid', gridTemplateRows: '1fr 1fr', justifyContent: 'space-between'}}>
                         <Button
                             variant="contained"
@@ -150,10 +150,10 @@ const Row = (props) => {
                         size="small"
                         className={classes.submit}
                         onClick={() => deleteProduct()}
-                    >Delete</Button></TableCell> :
+                    >Sterge</Button></TableCell> :
                     <TableCell style={{fontWeight: 'bold'}}><Button
                         disabled
-                    >Delete</Button></TableCell>
+                    >Sterge</Button></TableCell>
                 }
             </TableRow>
             <TableRow>

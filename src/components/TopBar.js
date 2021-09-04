@@ -26,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+// TopBar este una din componentele copil(subordonate) ale Home.js, care la randul ei are alte componente copil cum ar fi ShowCart sau componentele legate de
+// detaliile contului fiecarui utilizator. TopBar apare aproape pe fiecare pagina a aplicatitei si are rolul de a oferi o navigare rudimentara in cadrul
+// proiectului.
+
 const TopBar = (props) => {
     const classes = useStyles()
     const [cart, setCart] = useState(0)
@@ -104,7 +108,7 @@ const TopBar = (props) => {
             <div className='container-acc'>
                 <div onMouseLeave={() => setOpenAccount(false)} className='account-info'>
                     <div className='items-acc'>
-                        <HistoryIcon color='primary' style={{paddingTop: '20%'}}/>
+                        <HistoryIcon color='primary' style={{marginTop: '50%'}}/>
                         <Button
                             variant='contained'
                             color="primary"
@@ -112,12 +116,12 @@ const TopBar = (props) => {
                             onClick={() => setShowIstoric(true)}>Istoric Plati</Button>
                     </div>
                     <div className='items-acc'>
-                        <SettingsIcon color='primary' style={{paddingTop: '20%'}}/>
+                        <SettingsIcon color='primary' style={{marginTop: '50%'}}/>
                         <Button
                             variant="contained"
                             color="primary"
                             size="small"
-                            onClick={() => setShowSettings(true)}>Setari</Button>
+                            onClick={() => setShowSettings(true)}>Schimba date utilizator</Button>
                     </div>
 
                 </div>
